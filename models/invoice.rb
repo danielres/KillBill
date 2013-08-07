@@ -2,7 +2,7 @@ class Invoice
   attr_reader :number, :entries, :hourly_rate, :vat
 
   def initialize number, options = {}
-    @number       = number
+    @number       = number.to_i
     @hourly_rate  = options[:hourly_rate].to_f
     @vat          = options[:vat].to_f
     @@invoices  ||= []
@@ -32,7 +32,12 @@ class Invoice
   end
 
   def self.find number
+    number = number.to_i
     @@invoices.select{ |i| i.number == number }.first
+  end
+
+  def self.all
+    @@invoices
   end
 
 end

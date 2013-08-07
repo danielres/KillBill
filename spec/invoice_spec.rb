@@ -7,6 +7,9 @@ describe Invoice do
       invoice =  Invoice.new 123
       expect( invoice.number ).to eq 123
     end
+    it "refuses to create an invoice with an already taken number" do
+      pending
+    end
     describe "with parameters" do
       invoice = Invoice.new 567, vat: 21, hourly_rate: 56
       it "accepts a value for vat" do
