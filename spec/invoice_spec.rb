@@ -2,13 +2,19 @@ require_relative '../models/invoice'
 
 describe Invoice do
 
+  after :each do
+    Invoice.reset_all
+    Invoice.all.should be_empty
+  end
+
   describe "#new" do
     it "creates an invoice with a number attribute" do
       invoice =  Invoice.new 123
       expect( invoice.number ).to eq 123
     end
     it "refuses to create an invoice with an already taken number" do
-      pending
+      Invoice.new 123
+      expect{ Invoice.new 123 }.to raise_error StandardError
     end
     describe "with parameters" do
       invoice = Invoice.new 567, vat: 21, hourly_rate: 56
@@ -27,6 +33,21 @@ describe Invoice do
     it "retrieves a unique invoice by its number" do
       expect( Invoice.find 1 ).to be invoice1
       expect( Invoice.find 2 ).to be invoice2
+    end
+    it "returns nil if none found" do
+      expect( Invoice.find 3 ).to be_nil
+    end
+  end
+
+  describe "#all" do
+    let!(:invoice1){ Invoice.new 1 }
+    let!(:invoice2){ Invoice.new 2 }
+    it "returns a list with all invoices" do
+      expect( Invoice.all ).to match_array [ invoice1, invoice2 ]
+    end
+    it "returns an empty list if none found" do
+      Invoice.reset_all
+      expect( Invoice.all ).to eq []
     end
   end
 
@@ -84,5 +105,12 @@ describe Invoice do
       expect( invoice.inc_vat_total ).to eq ( 453.60 + ( 453.60 * 21 / 100 ) ).round 2 # 548.86
     end
   end
-
+  describe "#reset_all" do
+    let!( :invoice ){ Invoice.new 123 }
+    it "resets the list of invoices" do
+      Invoice.all.should_not be_empty
+      Invoice.reset_all
+      Invoice.all.should be_empty
+    end
+  end
 end
