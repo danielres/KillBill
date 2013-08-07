@@ -27,6 +27,16 @@ Given(/^an invoice "(.*?)" with VAT: (\d+)%, hourly rate: (\d+)$/) do |invoice_n
 end
 
 Then(/^the total charged for invoice "(.*?)" without taxes should be (.*)$/) do |invoice_number, amount|
-  expect( @invoice.ex_vat_total ).to eq amount.to_f
+  amount = amount.to_f
+  expect( @invoice.ex_vat_total ).to eq amount
 end
 
+Then(/^the taxes for invoice "(.*?)" should be (.*)$/) do |invoice_number, amount|
+  amount = amount.to_f
+  expect( @invoice.vat_total ).to eq amount
+end
+
+Then(/^the total charged for invoice "(.*?)" with taxes should be (.*)$/) do |invoice_number, amount|
+  amount = amount.to_f
+  expect( @invoice.inc_vat_total ).to eq amount
+end
