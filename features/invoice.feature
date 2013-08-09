@@ -1,4 +1,4 @@
-Feature: Generate an invoice with activvities and totals
+Feature: Generate an invoice with activities and totals
 
 
   As a freelance
