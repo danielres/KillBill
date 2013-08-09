@@ -1,4 +1,5 @@
 require_relative "../../models/invoice"
+require_relative "../../models/invoice_store"
 require 'ostruct'
 
 FLOAT = Transform /^[0-9]*\.?[0-9]+$/ do |float|
@@ -10,12 +11,12 @@ NUMBER = Transform /^[0-9]+$/ do |number|
 end
 
 INVOICE = Transform /^invoice ([0-9]+)$/ do |number|
-  Invoice.find( number.to_i ) || Invoice.new( number.to_i )
+  @invoice_store.find( number.to_i ) || @invoice_store.new_invoice( number.to_i )
 end
 
 INVOICE_WITH_PARAMS = Transform /^invoice ([0-9]+) with (.*)$/ do |number, params|
   params = Hash[ params.split(', ').map{ |e| e.split(': ') } ]
-  Invoice.new number.to_i,
+  @invoice_store.new_invoice number.to_i,
               vat:         params["vat"].to_f,
               hourly_rate: params["hourly_rate"].to_f
 end

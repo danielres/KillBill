@@ -1,7 +1,7 @@
-After do
-  reset_all
+Before do
+  @invoice_store = InvoiceStore.new
 end
 
-def reset_all
-  Invoice.reset_all
+After do
+  @invoice_store.reset
 end
