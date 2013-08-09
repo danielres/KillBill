@@ -20,6 +20,7 @@ group :development, :test  do
   gem 'cucumber', require: false
   gem 'database_cleaner'
   gem 'rspec'
+  gem 'rspec-fire'
 end
 group :development do
   gem 'guard-cucumber'

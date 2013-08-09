@@ -1,12 +1,14 @@
+require_relative '../spec_helper'
 require_relative '../../models/invoice_store'
 
-class FakeInvoice
-  def initialize *args; end
-end
+
 
 describe InvoiceStore do
 
-  before( :each ){ stub_const "Invoice", FakeInvoice }
+  before( :each ) do
+    class_double( "Invoice" ).as_stubbed_const
+    Invoice.stub(:new).and_return( Object.new )
+  end
   let( :store   ){ InvoiceStore.new  }
 
   describe "#new" do
@@ -16,14 +18,15 @@ describe InvoiceStore do
     end
     it "accepts an owner as parameter" do
       owner = Object.new
-      store =  InvoiceStore.new owner: owner
+      store = InvoiceStore.new owner: owner
       expect( store.owner ).to be owner
     end
   end
 
   describe "#new_invoice" do
     it "returns a new invoice" do
-      expect( store.new_invoice ).to be_kind_of Invoice
+      Invoice.should_receive( :new )
+      store.new_invoice
     end
     it "accepts a number for the invoice as parameter" do
       Invoice.should_receive( :new ).with 10, anything
@@ -50,14 +53,14 @@ describe InvoiceStore do
 
   describe "#find" do
     it "finds an invoice by its number" do
-      invoice = store.new_invoice 5
+      invoice = store.new_invoice
       invoice.stub number: 5
       expect( store.find 5 ).to be invoice
     end
   end
 
   it "refuses to create an invoice with an already taken number" do
-    invoice = store.new_invoice 15
+    invoice = store.new_invoice
     invoice.stub number: 15
     expect{ store.new_invoice 15 }.to raise_error StandardError
     expect{ store.new_invoice 16 }.not_to raise_error StandardError
