@@ -25,6 +25,10 @@ Given(/^an (#{INVOICE}|#{INVOICE_WITH_PARAMS})$/) do |invoice|
   invoice
 end
 
+Given(/^(\d+) invoices$/) do |qty|
+  qty.times{ @invoice_store.new_invoice }
+end
+
 Given(/^an activity lasting (#{FLOAT}) hours added to (#{INVOICE})$/) do |hours, invoice|
   invoice.add_entry OpenStruct.new( hours: hours )
 end
