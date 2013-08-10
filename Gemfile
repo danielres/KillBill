@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'sinatra'
+gem 'sinatra-contrib'
 
 group :development, :test  do
   # gem 'cucumber', require: false
