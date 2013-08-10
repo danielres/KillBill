@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    addressable (2.3.5)
     backports (2.3.0)
     builder (3.0.4)
     capybara (2.1.0)
@@ -38,6 +39,8 @@ GEM
       guard (>= 1.1)
       rspec (~> 2.11)
     highline (1.6.19)
+    launchy (2.3.0)
+      addressable (~> 2.3)
     listen (1.1.4)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -103,6 +106,7 @@ DEPENDENCIES
   database_cleaner
   guard-cucumber
   guard-rspec
+  launchy
   rspec
   rspec-fire
   sinatra

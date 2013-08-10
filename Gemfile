@@ -10,6 +10,7 @@ group :development, :test  do
   gem 'rspec'
   gem 'rspec-fire'
   gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do
