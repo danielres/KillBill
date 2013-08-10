@@ -9,6 +9,7 @@ require 'capybara/cucumber'
 require 'rspec'
 
 Capybara.app = KillBill
+Capybara.save_and_open_page_path = 'tmp/capybara'
 
 class KillBillWorld
   include Capybara::DSL
