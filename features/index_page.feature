@@ -8,5 +8,5 @@ Feature: Index page
     Given 3 invoices
 
   Scenario: The author visits the index page and sees the list of invoices
-    When  I visit the index page
+    When  I am on the homepage
     Then  I should see 3 invoices
