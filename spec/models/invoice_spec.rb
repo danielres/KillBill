@@ -1,5 +1,6 @@
 require_relative '../spec_helper'
 require_relative '../../models/invoice'
+require 'time'
 
 describe Invoice do
 
@@ -18,6 +19,18 @@ describe Invoice do
       invoice = Invoice.new 123, store: store
       expect( invoice.store ).to be store
     end
+    it "accepts an emit date as option parameter" do
+      invoice = Invoice.new 123, emit_date: "2013/02/01"
+      expect( invoice.emit_date ).to eq Time.parse("2013/02/01")
+    end
+
+    it "sets now as emit date if none passed" do
+      invoice = Invoice.new 123
+      # 1 second tolerance:
+      expect( invoice.emit_date ).to be_within( 1 ).of( Time.now )
+    end
+
+
     describe "with parameters" do
       invoice = Invoice.new 567, vat: 21, hourly_rate: 56
       it "accepts a value for vat" do
@@ -37,6 +50,9 @@ describe Invoice do
       invoice.add_entry entry1
       invoice.add_entry entry2
       expect( invoice.total_hours ).to eq 8.1
+    end
+    it "returns 0 when no entries" do
+      expect( invoice.total_hours ).to eq 0
     end
   end
 

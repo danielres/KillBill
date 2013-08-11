@@ -4,9 +4,14 @@ Feature: Index page
   I want to visit the index page
   In order to see the list of invoices already made
 
-  Background:
-    Given 3 invoices
-
   Scenario: The author visits the index page and sees the list of invoices
+    Given 3 invoices
     When  I am on the homepage
     Then  I should see 3 invoices
+
+  Scenario: The author sees the title of an invoice on the index page
+    Given an invoice 12 with vat: 21, hourly_rate: 56, emit_date: 2013-08-05
+    And   an activity lasting 10 hours added to invoice 12
+    When  I am on the homepage
+    Then  I should see 1 invoice
+    And   I should see "2013-08-05", "€560.00" within the invoice
