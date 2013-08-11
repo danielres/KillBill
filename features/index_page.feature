@@ -15,3 +15,12 @@ Feature: Index page
     When  I am on the homepage
     Then  I should see 1 invoice
     And   I should see "2013003", "2013-08-05", "€560.00" within the invoice
+
+  Scenario: Access an invoice from the index page
+    Given an invoice 2013004
+    And   an invoice 2013005
+    When  I am on the homepage
+    And   I follow "2013005"
+    Then  I should see "2013005"
+    But   I should not see "2013004"
+

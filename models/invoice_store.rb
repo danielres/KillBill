@@ -18,7 +18,7 @@ class InvoiceStore
   end
 
   def find number
-    entries.select{ |e| e.number == number }.first rescue nil
+    entries.select{ |e| e.number == number.to_i }.first rescue nil
   end
 
   def reset

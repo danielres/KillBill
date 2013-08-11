@@ -20,6 +20,11 @@ class KillBill < Sinatra::Base
     end
   end
 
+  get '/:invoice_number' do
+    invoice = invoice_store.find params[:invoice_number]
+    "<div class='invoice'>#{invoice}</li>"
+  end
+
 
   private
 

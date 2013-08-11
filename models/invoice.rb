@@ -35,15 +35,20 @@ class Invoice
 
 
   def to_s
-    output = ""
+    output = "<a href='#{page_path}'>"
     output << "#{number}"
     output << " | "
     output << "#{emit_date}"
     output << " | "
     output << ( "€%.2f" % ex_vat_total)
+    output << "</a>"
   end
 
+  private
 
+    def page_path
+      "/#{number}"
+    end
 
 
 end
