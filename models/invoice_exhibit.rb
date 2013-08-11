@@ -6,21 +6,21 @@ class InvoiceExhibit < SimpleDelegator
   end
 
   def to_html
-    output = "<div class='invoice'>"
-    output << "#{@invoice}"
-    output << "<br />"
-    output << "Activities:"
-    output << @invoice.entries.map{ |e| "<li class='activity'>#{e.name}: #{e.hours}h</li>" }.join
-    output << "<hr />"
-    output << "Hourly rate: €#{@invoice.hourly_rate}"
-    output << "<br />"
-    output << "Total HT: €#{@invoice.ex_vat_total}"
-    output << "<br />"
-    output << "+TVA #{@invoice.vat}%: €#{@invoice.vat_total}"
-    output << "<br />"
-    output << "Total TTC: €#{@invoice.inc_vat_total}"
-    output << "<br />"
-    output << "</div>"
+    @entries = @invoice.entries.map{ |e| "<li class='activity'>#{e.name}: #{e.hours}h</li>" }.join
+    "<div class='invoice'>
+      #{@invoice}                                       <br />
+
+      Activities:
+      #{@entries}
+
+      <hr />
+
+      Hourly rate:           €#{@invoice.hourly_rate}   <br />
+      Total HT:              €#{@invoice.ex_vat_total}  <br />
+      +TVA #{@invoice.vat}%: €#{@invoice.vat_total}     <br />
+      Total TTC:             €#{@invoice.inc_vat_total} <br />
+
+    </div>"
   end
 
 end
