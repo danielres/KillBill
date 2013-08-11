@@ -36,6 +36,8 @@ class Invoice
 
   def to_s
     output = ""
+    output << "#{number}"
+    output << " | "
     output << "#{emit_date}"
     output << " | "
     output << ( "€%.2f" % ex_vat_total)

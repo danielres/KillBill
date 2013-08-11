@@ -10,8 +10,8 @@ Feature: Index page
     Then  I should see 3 invoices
 
   Scenario: The author sees an invoice with basic details on the index page
-    Given an invoice 12 with vat: 21, hourly_rate: 56, emit_date: 2013-08-05
-    And   an activity lasting 10 hours added to invoice 12
+    Given an invoice 2013003 with vat: 21, hourly_rate: 56, emit_date: 2013-08-05
+    And   an activity lasting 10 hours added to invoice 2013003
     When  I am on the homepage
     Then  I should see 1 invoice
-    And   I should see "2013-08-05", "€560.00" within the invoice
+    And   I should see "2013003", "2013-08-05", "€560.00" within the invoice
