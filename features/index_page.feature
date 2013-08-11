@@ -9,7 +9,7 @@ Feature: Index page
     When  I am on the homepage
     Then  I should see 3 invoices
 
-  Scenario: The author sees the title of an invoice on the index page
+  Scenario: The author sees an invoice with basic details on the index page
     Given an invoice 12 with vat: 21, hourly_rate: 56, emit_date: 2013-08-05
     And   an activity lasting 10 hours added to invoice 12
     When  I am on the homepage
