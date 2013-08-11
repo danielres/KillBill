@@ -3,6 +3,7 @@ Bundler.require
 
 require_relative '../models/invoice'
 require_relative '../models/invoice_store'
+require_relative '../models/invoice_exhibit'
 
 
 class KillBill < Sinatra::Base
@@ -22,31 +23,17 @@ class KillBill < Sinatra::Base
 
   get '/:invoice_number' do
     invoice = invoice_store.find params[:invoice_number]
-    output = "<div class='invoice'>"
-    output << "#{invoice}"
-    output << "<br />"
-    output << "Activities:"
-    output << invoice.entries.map{ |e| "<li class='activity'>#{e.name}: #{e.hours}h</li>" }.join
-    output << "<hr />"
-    output << "Hourly rate: €#{invoice.hourly_rate}"
-    output << "<br />"
-    output << "Total HT: €#{invoice.ex_vat_total}"
-    output << "<br />"
-    output << "+TVA #{invoice.vat}%: €#{invoice.vat_total}"
-    output << "<br />"
-    output << "Total TTC: €#{invoice.inc_vat_total}"
-    output << "<br />"
-    output << "</div>"
+    InvoiceExhibit.new( invoice ).to_html
   end
 
 
   private
 
     def invoice_store
-      @@invoice_store ||= load_invoice_store
+      @@invoice_store ||= load_invoice_store_with_contents
     end
 
-    def load_invoice_store
+    def load_invoice_store_with_contents
       InvoiceStore.new.tap do |s|
         s.new_invoice( 123, vat: 21, hourly_rate: 56 ).tap do |i|
           i.add_entry( OpenStruct.new( name: 'Brogramming', hours: 10  ) )
