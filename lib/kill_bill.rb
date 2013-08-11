@@ -22,7 +22,10 @@ class KillBill < Sinatra::Base
 
   get '/:invoice_number' do
     invoice = invoice_store.find params[:invoice_number]
-    "<div class='invoice'>#{invoice}</li>"
+    output = "<div class='invoice'>"
+    output << "#{invoice}"
+    output << invoice.entries.map{ |e| "<li class='activity'>#{e.name}: #{e.hours}h</li>" }.join
+    output << "</div>"
   end
 
 
@@ -34,7 +37,7 @@ class KillBill < Sinatra::Base
 
     def load_invoice_store
       InvoiceStore.new.tap do |s|
-        s.new_invoice
+        s.new_invoice.add_entry( OpenStruct.new( name: 'Brogramming', hours: 10) )
         s.new_invoice
       end
     end
