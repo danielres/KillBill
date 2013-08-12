@@ -8,6 +8,9 @@ class InvoiceExhibit < SimpleDelegator
   def vat_total     ; format_price super end
   def inc_vat_total ; format_price super end
 
+  def emit_date ; format_date super end
+  def due_date  ; format_date super end
+
 
   def to_html
     haml :invoice, number: number,
@@ -32,6 +35,10 @@ class InvoiceExhibit < SimpleDelegator
 
     def format_price price
       '%.2f' % price
+    end
+
+    def format_date date
+      date.strftime "%F"
     end
 
 end
