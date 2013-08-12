@@ -2,21 +2,12 @@ require 'haml'
 
 class InvoiceExhibit < SimpleDelegator
 
-  def hourly_rate
-    format_price super
-  end
 
-  def ex_vat_total
-    format_price super
-  end
+  def hourly_rate   ; format_price super end
+  def ex_vat_total  ; format_price super end
+  def vat_total     ; format_price super end
+  def inc_vat_total ; format_price super end
 
-  def vat_total
-    format_price super
-  end
-
-  def inc_vat_total
-    format_price super
-  end
 
   def to_html
     haml :invoice, number: number,
@@ -29,6 +20,7 @@ class InvoiceExhibit < SimpleDelegator
                 vat_total: vat_total,
             inc_vat_total: inc_vat_total
   end
+
 
   private
 
