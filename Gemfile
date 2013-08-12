@@ -2,11 +2,10 @@ source 'http://rubygems.org'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'haml'
 
-group :development, :test  do
-  # gem 'cucumber', require: false
+group :test do
   gem 'cucumber-sinatra'
-  gem 'database_cleaner'
   gem 'rspec'
   gem 'rspec-fire'
   gem 'capybara'
