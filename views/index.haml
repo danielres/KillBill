@@ -1,4 +1,4 @@
 - invoices.each do |i|
   %li.invoice
     %a{ href: i.page_path }
-      #{ i.number } | #{ i.emit_date } | €#{ '%.2f' % i.ex_vat_total }
+      #{ i.number } | #{ i.emit_date } | €#{ i.ex_vat_total }

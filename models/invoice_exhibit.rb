@@ -7,16 +7,32 @@ class InvoiceExhibit < SimpleDelegator
     __setobj__(invoice)
   end
 
+  def hourly_rate
+    format_price @invoice.hourly_rate
+  end
+
+  def ex_vat_total
+    format_price @invoice.ex_vat_total
+  end
+
+  def vat_total
+    format_price @invoice.vat_total
+  end
+
+  def inc_vat_total
+    format_price @invoice.inc_vat_total
+  end
+
   def to_html
-    haml :invoice, number: @invoice.number,
-                emit_date: @invoice.emit_date,
-                 due_date: @invoice.due_date,
-                  entries: @invoice.entries,
-                      vat: @invoice.vat,
-              hourly_rate: '%.2f' % @invoice.hourly_rate,
-             ex_vat_total: '%.2f' % @invoice.ex_vat_total,
-                vat_total: '%.2f' % @invoice.vat_total,
-            inc_vat_total: '%.2f' % @invoice.inc_vat_total
+    haml :invoice, number: number,
+                emit_date: emit_date,
+                 due_date: due_date,
+                  entries: entries,
+                      vat: vat,
+              hourly_rate: hourly_rate,
+             ex_vat_total: ex_vat_total,
+                vat_total: vat_total,
+            inc_vat_total: inc_vat_total
   end
 
   private
@@ -25,6 +41,10 @@ class InvoiceExhibit < SimpleDelegator
       Haml::Engine.new( File.read "views/#{identifier}.html.haml" ).render( Object.new, locals ) do
         block.call if block
       end
+    end
+
+    def format_price price
+      '%.2f' % price
     end
 
 end
