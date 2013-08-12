@@ -37,22 +37,8 @@ class Invoice
     ( ex_vat_total + vat_total ).round 2
   end
 
-
-  def to_s
-    output = "<a href='#{page_path}'>"
-    output << "#{number}"
-    output << " | "
-    output << "#{emit_date}"
-    output << " | "
-    output << ( "€%.2f" % ex_vat_total)
-    output << "</a>"
+  def page_path
+    "/#{number}"
   end
-
-  private
-
-    def page_path
-      "/#{number}"
-    end
-
 
 end

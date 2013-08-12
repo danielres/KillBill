@@ -7,16 +7,15 @@ require_relative '../models/invoice_exhibit'
 
 
 class KillBill < Sinatra::Base
-
+  set :root, [ File.dirname(__FILE__), '/..'].join
   def self.invoice_store= store
     @@invoice_store = store
   end
 
 
   get '/' do
-    invoice_store.entries.map do |e|
-      "<li class='invoice'>#{e}</li>"
-    end
+    invoices = invoice_store.entries.map{ |e| InvoiceExhibit.new( e ) }
+    haml :index, locals: { invoices: invoices }, layout: false
   end
 
   get '/:invoice_number' do
