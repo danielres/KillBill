@@ -1,7 +1,8 @@
 
 .invoice
   %h1 Invoice number #{ number }
-  %p= emit_date
+  %p Emit date: #{ emit_date }
+  %p Due date:  #{  due_date }
   %p= ex_vat_total
 
   %h2 Activities

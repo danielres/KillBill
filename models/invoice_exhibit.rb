@@ -10,6 +10,7 @@ class InvoiceExhibit < SimpleDelegator
   def to_html
     haml :invoice, number: @invoice.number,
                 emit_date: @invoice.emit_date,
+                 due_date: @invoice.due_date,
                   entries: @invoice.entries,
                       vat: @invoice.vat,
               hourly_rate: '%.2f' % @invoice.hourly_rate,

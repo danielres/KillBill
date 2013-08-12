@@ -29,7 +29,8 @@ describe InvoiceExhibit do
       invoice.should_receive( :ex_vat_total  ).and_return 1000
       invoice.should_receive( :vat_total     ).and_return 210
       invoice.should_receive( :inc_vat_total ).and_return 1210
-      invoice.should_receive( :emit_date     ).and_return Time.now
+      invoice.should_receive( :emit_date     ).and_return "2013-08-05"
+      invoice.should_receive( :due_date      ).and_return "2013-09-04"
       html = Capybara.string exhibit.to_html
       expect( html ).to have_css '.invoice'
       expect( html ).to have_css '.activity', count: 2
@@ -37,6 +38,8 @@ describe InvoiceExhibit do
       expect( html.all('.activity').first ).to have_content '3h'
       expect( html.all('.activity').last  ).to have_content 'Drawing'
       expect( html.all('.activity').last  ).to have_content '5h'
+      expect( html ).to have_content '2013-08-05'
+      expect( html ).to have_content '2013-09-04'
       expect( html ).to have_content '21%'
       expect( html ).to have_content '€1000'
       expect( html ).to have_content '€210'

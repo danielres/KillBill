@@ -56,6 +56,15 @@ describe Invoice do
     end
   end
 
+  describe "#due_date" do
+    let( :emit_date ){ Time.parse '2013-08-05' }
+    let( :invoice   ){ Invoice.new 123 }
+    it "returns a due date that is 30 days after the emit date" do
+      invoice.stub emit_date: emit_date
+      expect( invoice.due_date ).to eq Time.parse( '2013-09-04' )
+    end
+  end
+
   describe "#ex_vat_total" do
     let( :invoice ){ Invoice.new 123, hourly_rate: 56 }
     let( :entry1  ){ stub hours: 3   }

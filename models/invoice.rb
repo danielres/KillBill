@@ -17,6 +17,10 @@ class Invoice
     @entries << entry
   end
 
+  def due_date
+    emit_date + 30 * 60 * 60 * 24
+  end
+
   def total_hours
     @entries.map(&:hours).inject(:+) || 0
   end
