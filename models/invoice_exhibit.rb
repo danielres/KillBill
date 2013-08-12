@@ -2,25 +2,20 @@ require 'haml'
 
 class InvoiceExhibit < SimpleDelegator
 
-  def initialize invoice
-    @invoice = invoice
-    __setobj__(invoice)
-  end
-
   def hourly_rate
-    format_price @invoice.hourly_rate
+    format_price super
   end
 
   def ex_vat_total
-    format_price @invoice.ex_vat_total
+    format_price super
   end
 
   def vat_total
-    format_price @invoice.vat_total
+    format_price super
   end
 
   def inc_vat_total
-    format_price @invoice.inc_vat_total
+    format_price super
   end
 
   def to_html
