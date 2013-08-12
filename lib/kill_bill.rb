@@ -8,8 +8,6 @@ require_relative '../models/invoice_exhibit'
 
 class KillBill < Sinatra::Base
 
-  configure( :development ){ register Sinatra::Reloader }
-
   def self.invoice_store= store
     @@invoice_store = store
   end
