@@ -1,3 +1,5 @@
+require 'haml'
+
 class InvoiceExhibit < SimpleDelegator
 
   def initialize invoice
@@ -6,21 +8,22 @@ class InvoiceExhibit < SimpleDelegator
   end
 
   def to_html
-    @entries = @invoice.entries.map{ |e| "<li class='activity'>#{e.name}: #{e.hours}h</li>" }.join
-    "<div class='invoice'>
-      #{@invoice}                                       <br />
-
-      Activities:
-      #{@entries}
-
-      <hr />
-
-      Hourly rate:           €#{@invoice.hourly_rate}   <br />
-      Total HT:              €#{@invoice.ex_vat_total}  <br />
-      +TVA #{@invoice.vat}%: €#{@invoice.vat_total}     <br />
-      Total TTC:             €#{@invoice.inc_vat_total} <br />
-
-    </div>"
+    haml :invoice, number: @invoice.number,
+                emit_date: @invoice.emit_date,
+                  entries: @invoice.entries,
+                      vat: @invoice.vat,
+              hourly_rate: '%.2f' % @invoice.hourly_rate,
+             ex_vat_total: '%.2f' % @invoice.ex_vat_total,
+                vat_total: '%.2f' % @invoice.vat_total,
+            inc_vat_total: '%.2f' % @invoice.inc_vat_total
   end
+
+  private
+
+    def haml identifier, locals = {}, &block
+      Haml::Engine.new( File.read "views/#{identifier}.html.haml" ).render( Object.new, locals ) do
+        block.call if block
+      end
+    end
 
 end

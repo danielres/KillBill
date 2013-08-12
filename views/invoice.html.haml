@@ -1,0 +1,20 @@
+
+.invoice
+  %h1 Invoice number #{ number }
+  %p= emit_date
+  %p= ex_vat_total
+
+  %h2 Activities
+  - entries.each do |e|
+    %li.activity
+      #{ e.name }: #{ e.hours }h
+
+  %hr/
+  Hourly rate: €#{ hourly_rate }
+  %br/
+  Total HT: €#{ ex_vat_total }
+  %br/
+  +TVA #{ vat }%: €#{ vat_total }
+  %br/
+  Total TTC: €#{ inc_vat_total }
+
