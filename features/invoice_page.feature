@@ -4,7 +4,7 @@ Feature: Invoice page
   I want to visit an invoice page
   In order to see the complete invoice
 
-  Scenario: The author visits the page of an invoice
+  Scenario: The author visits the page of an invoice and reads all its details
     Given an invoice 2013003 with vat: 21, hourly_rate: 56, emit_date: 2013-08-05
     And   an activity "Brogramming" lasting 10 hours added to invoice 2013003
     When  I am on the invoice 2013003 page
