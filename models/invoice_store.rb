@@ -23,10 +23,6 @@ class InvoiceStore
     entries.select{ |e| e.number == number.to_i }.first rescue nil
   end
 
-  def reset
-    @@entries = []
-  end
-
   private
 
     def handle_number number

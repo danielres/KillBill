@@ -70,13 +70,4 @@ describe InvoiceStore do
     expect{ store.new_invoice 16 }.not_to raise_error StandardError
   end
 
-  describe "#reset" do
-    it "deletes all entries" do
-      store.new_invoice
-      expect( store.entries ).not_to be_empty
-      store.reset
-      expect( store.entries ).to be_empty
-    end
-  end
-
 end
