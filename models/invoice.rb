@@ -1,4 +1,5 @@
 require 'time'
+require 'ostruct'
 
 class Invoice
   attr_reader :number, :entries, :hourly_rate, :vat, :client, :store, :emit_date
@@ -14,6 +15,7 @@ class Invoice
   end
 
   def add_entry entry
+    entry = OpenStruct.new( entry ) if entry.kind_of? Hash
     @entries << entry
   end
 

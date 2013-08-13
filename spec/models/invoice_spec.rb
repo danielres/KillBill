@@ -42,6 +42,22 @@ describe Invoice do
     end
   end
 
+  describe "#add_entry" do
+    it "accepts an object as an entry and adds it to the list of entries" do
+      invoice = Invoice.new 123
+      entry  = Object.new
+      invoice.add_entry entry
+      expect( invoice.entries ).to eq [ entry ]
+    end
+    it "accepts a hash as an entry" do
+      invoice = Invoice.new 123
+      entry  = { hours: 3, name: 'Brogramming' }
+      invoice.add_entry entry
+      expect( invoice.entries.first.name  ).to eq 'Brogramming'
+      expect( invoice.entries.first.hours ).to eq 3
+    end
+  end
+
   describe "#total_hours" do
     let( :invoice ){ Invoice.new 123 }
     let( :entry1  ){ stub hours: 3   }
