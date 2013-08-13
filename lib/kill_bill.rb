@@ -31,13 +31,8 @@ class KillBill < Sinatra::Base
     end
 
     def load_invoice_store_with_contents
-      InvoiceStore.new.tap do |s|
-        s.new_invoice( 123, vat: 21, hourly_rate: 56 ).tap do |i|
-          i.add_entry( OpenStruct.new( name: 'Brogramming', hours: 10  ) )
-          i.add_entry( OpenStruct.new( name: 'Laundry',     hours: 5.2 ) )
-        end
-        s.new_invoice
-      end
+      require_relative 'data'
+      STORE
     end
 
 end
