@@ -41,6 +41,10 @@ describe InvoiceStore do
       Invoice.should_receive( :new ).with anything, store: store
       store.new_invoice
     end
+    it "accepts passing options without specifying a first argument for invoice number" do
+      Invoice.should_receive( :new ).with anything, { foo: 'foo', bar: 'bar', store: store }
+      store.new_invoice foo: 'foo', bar: 'bar'
+    end
   end
 
   describe "#entries" do

@@ -7,7 +7,9 @@ class InvoiceStore
     @owner = options[:owner]
   end
 
-  def new_invoice number = nil, options = {}
+  def new_invoice *args
+    number  = args.detect{ |a| a.kind_of? Integer } || nil
+    options = args.detect{ |a| a.kind_of? Hash    } || {}
     options = { store: self }.merge( options )
     Invoice.new( handle_number( number ), options )
       .tap{ |invoice| @@entries << invoice }
