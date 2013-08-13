@@ -5,7 +5,7 @@ require 'ostruct'
 
 describe InvoiceExhibit do
 
-  let( :invoice ){ instance_double "Invoice" }
+  let( :invoice ){ instance_double "Invoice"  }
   let( :exhibit ){ InvoiceExhibit.new invoice }
 
   describe "#new" do
@@ -23,9 +23,9 @@ describe InvoiceExhibit do
 
   describe "#to_html" do
     it "renders the invoice as html with its contents" do
-      jack_infos = { name:  "Jack's name"  , address:      "Jack's address"    , phone: "Jack's phone",
-                         email: "Jack's email" , vat_number:   "Jack's vat_number" , iban: "Jack's iban",
-                         bic:   "Jack's bic"   , bank_address: "Jack's bank address" }
+      jack_infos = {  name:  "Jack's name"  , address:      "Jack's address"    , phone: "Jack's phone",
+                      email: "Jack's email" , vat_number:   "Jack's vat_number" , iban: "Jack's iban",
+                      bic:   "Jack's bic"   , bank_address: "Jack's bank address" }
       jack = OpenStruct.new jack_infos
       invoice.should_receive( :number        ).and_return 2013001
       invoice.should_receive( :hourly_rate   ).and_return 50
@@ -50,9 +50,7 @@ describe InvoiceExhibit do
       expect( html ).to have_content '€1000'
       expect( html ).to have_content '€210'
       expect( html ).to have_content '€1210'
-      jack_infos.each do | key, value |
-        expect( html ).to have_content value
-      end
+      jack_infos.values.each{ |jack_info| expect( html ).to have_content jack_info }
     end
 
   end
