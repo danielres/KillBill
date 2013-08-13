@@ -1,6 +1,7 @@
 require_relative '../spec_helper'
 require_relative '../../models/invoice_exhibit'
 require 'capybara'
+require 'ostruct'
 
 describe InvoiceExhibit do
 
@@ -22,6 +23,10 @@ describe InvoiceExhibit do
 
   describe "#to_html" do
     it "renders the invoice as html with its contents" do
+      jack_infos = { name:  "Jack's name"  , address:      "Jack's address"    , phone: "Jack's phone",
+                         email: "Jack's email" , vat_number:   "Jack's vat_number" , iban: "Jack's iban",
+                         bic:   "Jack's bic"   , bank_address: "Jack's bank address" }
+      jack = OpenStruct.new jack_infos
       invoice.should_receive( :number        ).and_return 2013001
       invoice.should_receive( :hourly_rate   ).and_return 50
       invoice.should_receive( :vat           ).and_return 21
@@ -31,6 +36,7 @@ describe InvoiceExhibit do
       invoice.should_receive( :inc_vat_total ).and_return 1210
       invoice.should_receive( :emit_date     ).and_return Time.parse("2013-08-05")
       invoice.should_receive( :due_date      ).and_return Time.parse("2013-09-04")
+      invoice.should_receive( :owner         ).and_return jack
       html = Capybara.string exhibit.to_html
       expect( html ).to have_css '.invoice'
       expect( html ).to have_css '.activity', count: 2
@@ -44,7 +50,11 @@ describe InvoiceExhibit do
       expect( html ).to have_content '€1000'
       expect( html ).to have_content '€210'
       expect( html ).to have_content '€1210'
+      jack_infos.each do | key, value |
+        expect( html ).to have_content value
+      end
     end
+
   end
 
 

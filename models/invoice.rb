@@ -2,6 +2,7 @@ require 'time'
 require 'ostruct'
 
 class Invoice
+
   attr_reader :number, :entries, :hourly_rate, :vat, :client, :store, :emit_date
 
   def initialize number, options = {}
@@ -12,6 +13,10 @@ class Invoice
     @client       = options[:client]
     @store        = options[:store]
     @emit_date    = Time.parse( options[:emit_date] || Time.now.to_s )
+  end
+
+  def owner
+    @store.owner
   end
 
   def add_entry entry
@@ -42,5 +47,6 @@ class Invoice
   def page_path
     "/#{number}"
   end
+
 
 end

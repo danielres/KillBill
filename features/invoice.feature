@@ -21,5 +21,3 @@ Feature: Generate an invoice with activities and totals
     Then  the total charged in invoice 12 without taxes should be 285.60
     And   the vat charged in invoice 12 should be 59.98
     And   the total charged in invoice 12 with taxes should be 345.58
-
-

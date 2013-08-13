@@ -11,9 +11,11 @@ class InvoiceExhibit < SimpleDelegator
   def emit_date ; format_date super end
   def due_date  ; format_date super end
 
+  def owner ; format_person super end
 
   def to_html
     haml :invoice, number: number,
+                    owner: owner,
                 emit_date: emit_date,
                  due_date: due_date,
                   entries: entries,
@@ -39,6 +41,13 @@ class InvoiceExhibit < SimpleDelegator
 
     def format_date date
       date.strftime "%F"
+    end
+
+    def format_person person
+      [ person.name,       person.address,
+        person.phone,      person.email,
+        person.vat_number, person.iban,
+        person.bic,        person.bank_address ].join '<br />'
     end
 
 end

@@ -49,3 +49,24 @@ end
 Then(/^the total charged in (#{INVOICE}) with taxes should be (#{FLOAT})$/) do |invoice, amount|
   expect( invoice.inc_vat_total ).to eq amount
 end
+
+Given(/^an invoice (\d+) from Jack$/) do |number|
+  jack = OpenStruct.new  name: "Jack's name",
+                      address: "Jack's address",
+                        phone: "Jack's phone",
+                        email: "Jack's email",
+                   vat_number: "Jack's vat_number",
+                         iban: "Jack's iban",
+                          bic: "Jack's bic",
+                 bank_address: "Jack's bank address"
+  @invoice_store.define_singleton_method( :owner ){ jack }
+  @invoice_store.new_invoice number
+end
+
+Then(/^I should see Jack's business info: name, address, phone, email, VAT number, IBAN account, BIC, bank address$/) do
+  jack_infos = [ "Jack's name"      , "Jack's address", "Jack's phone", "Jack's email",
+                 "Jack's vat_number", "Jack's iban"   , "Jack's bic"  , "Jack's bank address" ]
+  jack_infos.each do |info|
+    expect( page ).to have_content info
+  end
+end

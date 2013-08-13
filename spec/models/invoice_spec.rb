@@ -30,6 +30,14 @@ describe Invoice do
       expect( invoice.emit_date ).to be_within( 1 ).of( Time.now )
     end
 
+    it "delegates its owner to its store" do
+      store   = double
+      invoice = Invoice.new 123, store: store
+      owner   = Object.new
+      store.should_receive( :owner  ).and_return owner
+      expect( invoice.owner ).to be owner
+    end
+
 
     describe "with parameters" do
       invoice = Invoice.new 567, vat: 21, hourly_rate: 56
