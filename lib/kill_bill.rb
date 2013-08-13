@@ -8,6 +8,12 @@ require_relative '../models/invoice_exhibit'
 
 class KillBill < Sinatra::Base
   set :root, [ File.dirname(__FILE__), '/..'].join
+
+  def initialize
+    super
+    @@invoice_store ||= load_invoice_store_with_contents
+  end
+
   def self.invoice_store= store
     @@invoice_store = store
   end
@@ -27,7 +33,7 @@ class KillBill < Sinatra::Base
   private
 
     def invoice_store
-      @@invoice_store ||= load_invoice_store_with_contents
+      @@invoice_store
     end
 
     def load_invoice_store_with_contents
