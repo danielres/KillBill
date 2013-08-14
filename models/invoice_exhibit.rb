@@ -11,11 +11,13 @@ class InvoiceExhibit < SimpleDelegator
   def emit_date ; format_date super end
   def due_date  ; format_date super end
 
-  def owner ; format_person super end
+  def owner  ; format_person super end
+  def client ; format_client super end
 
   def to_html
     haml :invoice, number: number,
                     owner: owner,
+                   client: client,
                 emit_date: emit_date,
                  due_date: due_date,
                   entries: entries,
@@ -47,7 +49,13 @@ class InvoiceExhibit < SimpleDelegator
       [ person.name,       person.address,
         person.phone,      person.email,
         person.vat_number, person.iban,
-        person.bic,        person.bank_address ].join '<br />'
+        person.bic,        person.bank_address ].compact.join '<br />'
+    end
+    def format_client client
+      [ client.first_name,
+        client.last_name,
+        client.company_name,
+        client.address].compact.join '<br />'
     end
 
 end

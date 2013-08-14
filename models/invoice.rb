@@ -3,6 +3,12 @@ require 'ostruct'
 
 class Invoice
 
+  class NullClient
+    def method_missing m, *args
+      "client #{m} missing".tap{ |message| warn message }
+    end
+  end
+
   attr_reader :number, :entries, :hourly_rate, :vat, :client, :store, :emit_date
 
   def initialize number, options = {}
@@ -10,7 +16,7 @@ class Invoice
     @hourly_rate  = options[:hourly_rate].to_f
     @vat          = options[:vat].to_f
     @entries    ||= []
-    @client       = options[:client]
+    @client       = options[:client] || NullClient.new
     @store        = options[:store]
     @emit_date    = Time.parse( options[:emit_date] || Time.now.to_s )
   end

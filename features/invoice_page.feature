@@ -16,3 +16,9 @@ Feature: Invoice page
     When  I am on the invoice 2013001 page
     Then  I should see Jack's business info: name, address, phone, email, VAT number, IBAN account, BIC, bank address
 
+
+  Scenario: A user visits the page of an invoice and sees the business infos of the client
+    Given an invoice 2013001 for "David Wong" from "ClientCorp" at "Business address"
+    When  I am on the invoice 2013001 page
+    Then  I should see "David", "Wong", "ClientCorp", "Business address" within the invoice
+

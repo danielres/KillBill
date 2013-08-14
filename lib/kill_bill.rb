@@ -37,7 +37,7 @@ class KillBill < Sinatra::Base
     end
 
     def load_invoice_store_with_contents
-      require_relative 'data'
+      require_relative '../db/data'
       STORE
     end
 

@@ -2,3 +2,4 @@
 tmp
 *.kate-swp
 .idea/
+db/data.rb

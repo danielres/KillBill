@@ -63,10 +63,19 @@ Given(/^an invoice (\d+) from Jack$/) do |number|
   @invoice_store.new_invoice number
 end
 
+
 Then(/^I should see Jack's business info: name, address, phone, email, VAT number, IBAN account, BIC, bank address$/) do
   jack_infos = [ "Jack's name"      , "Jack's address", "Jack's phone", "Jack's email",
                  "Jack's vat_number", "Jack's iban"   , "Jack's bic"  , "Jack's bank address" ]
   jack_infos.each do |info|
     expect( page ).to have_content info
   end
+end
+
+Given(/^an invoice (\d+) for "David Wong" from "ClientCorp" at "Business address"$/) do |number|
+  client = OpenStruct.new first_name: "David",
+                           last_name: "Wong",
+                        company_name: "ClientCorp",
+                             address: "Business address"
+  @invoice_store.new_invoice number, client: client
 end
