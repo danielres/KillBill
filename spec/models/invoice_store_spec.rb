@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../../models/invoice_store'
+require 'invoice_store'
 
 
 

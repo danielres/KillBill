@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../../models/invoice'
+require 'invoice'
 require 'time'
 
 describe Invoice do
