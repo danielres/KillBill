@@ -9,7 +9,9 @@
   %h2 Activities
   - entries.each do |e|
     %li.activity
-      #{ e.name }: #{ e.hours }h
+      %span.name #{ e.name }:
+      %span.hours #{ e.hours }h
+      .desc #{ e.desc }
 
   %hr/
   Hourly rate: €#{ hourly_rate }

@@ -17,8 +17,8 @@ STORE = InvoiceStore.new( owner: owner ).tap do |s|
   defaults = { vat: 21, hourly_rate: 56, client: client }
 
   i1 = s.new_invoice 123, defaults
-  i1.add_entry name: 'Brogramming', hours: 10
-  i1.add_entry name: 'Laundry'    , hours: 5.2
+  i1.add_entry name: 'Brogramming', hours: 10 , desc: 'Brogramming gangsta style'
+  i1.add_entry name: 'Laundry'    , hours: 5.2, desc: 'Washing things so they smell good, hmmmm'
 
 
   i2 = s.new_invoice defaults

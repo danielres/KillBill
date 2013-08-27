@@ -30,8 +30,8 @@ Given(/^(\d+) invoices$/) do |qty|
   qty.times{ @invoice_store.new_invoice }
 end
 
-Given(/^an activity(?: "(.*)")? lasting (#{FLOAT}) hours added to (#{INVOICE})$/) do |name, hours, invoice|
-  invoice.add_entry OpenStruct.new( name: name, hours: hours )
+Given(/^an activity(?: "(.*)")? lasting (#{FLOAT}) hours added to (#{INVOICE})(?:, described as "(.*)")?/) do |name, hours, invoice, desc|
+  invoice.add_entry OpenStruct.new( name: name, hours: hours, desc: desc )
 end
 
 Then(/^the total hours in (#{INVOICE}) should be (#{FLOAT})$/) do |invoice, total_hours|

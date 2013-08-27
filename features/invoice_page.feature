@@ -22,3 +22,8 @@ Feature: Invoice page
     When  I am on the invoice 2013001 page
     Then  I should see "David", "Wong", "ClientCorp", "Business address" within the invoice
 
+  Scenario: A user visits the page of an invoice and sees the line items with their descriptions
+    Given an invoice 2013001
+    And   an activity "Brogramming" lasting 10 hours added to invoice 2013001, described as "Brogramming gangsta style"
+    When  I am on the invoice 2013001 page
+    Then  I should see "Brogramming", "Brogramming gangsta style" within the invoice

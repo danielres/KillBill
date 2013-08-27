@@ -34,7 +34,7 @@ describe InvoiceExhibit do
       invoice.should_receive( :number        ).and_return 2013001
       invoice.should_receive( :hourly_rate   ).and_return 50
       invoice.should_receive( :vat           ).and_return 21
-      invoice.should_receive( :entries       ).and_return [ stub( name: 'Brogramming', hours: 3 ), stub( name: 'Drawing', hours: 5 ) ]
+      invoice.should_receive( :entries       ).and_return [ stub( 'entry1', name: 'Brogramming', hours: 3, desc: '' ), stub( 'entry2', name: 'Drawing', hours: 5, desc: '' ) ]
       invoice.should_receive( :ex_vat_total  ).and_return 1000
       invoice.should_receive( :vat_total     ).and_return 210
       invoice.should_receive( :inc_vat_total ).and_return 1210

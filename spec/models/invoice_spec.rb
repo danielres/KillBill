@@ -64,6 +64,12 @@ describe Invoice do
       expect( invoice.entries.first.name  ).to eq 'Brogramming'
       expect( invoice.entries.first.hours ).to eq 3
     end
+    it "accepts a description for the entry" do
+      invoice = Invoice.new 123
+      entry  = { hours: 3, name: 'Brogramming', desc: 'Brogramming with fellow Bros' }
+      invoice.add_entry entry
+      expect( invoice.entries.first.desc ).to eq 'Brogramming with fellow Bros'
+    end
   end
 
   describe "#total_hours" do
