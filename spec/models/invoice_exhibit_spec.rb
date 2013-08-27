@@ -21,6 +21,20 @@ describe InvoiceExhibit do
     end
   end
 
+  describe "#desc" do
+    let( :fake_owner               ){ stub 'owner', name: 'name', address: 'address', phone: 123, email: 'a@a.com', vat_number: 1, iban: 123, bic: 'AB', bank_address: 'bank_address' }
+    let( :fake_client              ){ stub 'client', first_name: 'first', last_name: 'last', company_name: 'company_name', address: 'address'                                         }
+    let( :entry_with_interpolation ){ stub 'entry_with_interpolation', name: 'Brogramming', hours: 3, desc: 'Brogramming with my #{ 5 + 5 } bros'                                     }
+    it "interpolates the description contents" do
+      invoice.stub number: 2013001     , owner: fake_owner  , client: fake_client,
+                   emit_date: Time.now , due_date: Time.now , vat: 21,
+                   hourly_rate: 50     , ex_vat_total: 100  , vat_total: 21 ,
+                   inc_vat_total: 121  , entries: [ entry_with_interpolation ]
+      html = Capybara.string exhibit.to_html
+      expect( html ).to have_content 'Brogramming with my 10 bros'
+    end
+  end
+
   describe "#to_html" do
     it "renders the invoice as html with its contents" do
       jack_infos   = { name:  "Jack's name"  , address:      "Jack's address"    , phone: "Jack's phone",

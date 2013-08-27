@@ -2,6 +2,9 @@ require 'haml'
 
 class InvoiceExhibit < SimpleDelegator
 
+  def source
+    __getobj__
+  end
 
   def hourly_rate   ; format_price super end
   def ex_vat_total  ; format_price super end
@@ -11,8 +14,9 @@ class InvoiceExhibit < SimpleDelegator
   def emit_date ; format_date super end
   def due_date  ; format_date super end
 
-  def owner  ; format_person super end
-  def client ; format_client super end
+  def owner   ; format_person  super end
+  def client  ; format_client  super end
+  def entries ; format_entries super end
 
   def to_html
     haml :invoice, number: number,
@@ -56,6 +60,13 @@ class InvoiceExhibit < SimpleDelegator
         client.last_name,
         client.company_name,
         client.address].compact.join '<br />'
+    end
+    def format_entries entries
+      entries.map{ |e| format_entry e }
+    end
+    def format_entry entry
+      interpolated_desc = source.instance_eval( '"' + entry.desc + '"' ) rescue ''
+      OpenStruct.new name: entry.name, hours: entry.hours, desc: interpolated_desc
     end
 
 end
