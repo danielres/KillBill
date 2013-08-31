@@ -1,5 +1,7 @@
 require 'haml'
-require_relative './text_evaluator'
+
+$LOAD_PATH.unshift 'models'
+require 'text_evaluator'
 
 class InvoiceExhibit < SimpleDelegator
 

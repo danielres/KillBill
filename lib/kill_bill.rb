@@ -1,10 +1,10 @@
 require 'bundler'
 Bundler.require
 
-require_relative '../models/invoice'
-require_relative '../models/invoice_store'
-require_relative '../models/invoice_exhibit'
-
+$LOAD_PATH.unshift 'models'
+require 'invoice'
+require 'invoice_store'
+require 'invoice_exhibit'
 
 class KillBill < Sinatra::Base
   set :root, [ File.dirname(__FILE__), '/..'].join
