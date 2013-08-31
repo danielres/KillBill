@@ -10,12 +10,12 @@ describe Invoice do
       expect( invoice.number ).to eq 123
     end
     it "accepts a client as option parameter" do
-      client  = stub
+      client  = double
       invoice = Invoice.new 123, client: client
       expect( invoice.client ).to be client
     end
     it "accepts an invoice store as option parameter" do
-      store   = stub
+      store   = double
       invoice = Invoice.new 123, store: store
       expect( invoice.store ).to be store
     end
@@ -74,8 +74,8 @@ describe Invoice do
 
   describe "#total_hours" do
     let( :invoice ){ Invoice.new 123 }
-    let( :entry1  ){ stub hours: 3   }
-    let( :entry2  ){ stub hours: 5.1 }
+    let( :entry1  ){ double hours: 3   }
+    let( :entry2  ){ double hours: 5.1 }
     it "returns the total hours for the invoice with entries" do
       invoice.add_entry entry1
       invoice.add_entry entry2
@@ -97,8 +97,8 @@ describe Invoice do
 
   describe "#ex_vat_total" do
     let( :invoice ){ Invoice.new 123, hourly_rate: 56 }
-    let( :entry1  ){ stub hours: 3   }
-    let( :entry2  ){ stub hours: 5.1 }
+    let( :entry1  ){ double hours: 3   }
+    let( :entry2  ){ double hours: 5.1 }
     it "returns the total money charged for that invoice, without taxes" do
       invoice.add_entry entry1
       invoice.add_entry entry2
@@ -108,8 +108,8 @@ describe Invoice do
 
   describe "#vat_total" do
     let( :invoice ){ Invoice.new 123, vat: 21, hourly_rate: 56 }
-    let( :entry1  ){ stub hours: 3   }
-    let( :entry2  ){ stub hours: 5.1 }
+    let( :entry1  ){ double hours: 3   }
+    let( :entry2  ){ double hours: 5.1 }
     it "returns the VAT amount for that invoice, rounded to the second decimal" do
       invoice.add_entry entry1
       invoice.add_entry entry2
@@ -119,8 +119,8 @@ describe Invoice do
 
   describe "#inc_vat_total" do
     let( :invoice ){ Invoice.new 123, vat: 21, hourly_rate: 56 }
-    let( :entry1  ){ stub hours: 3   }
-    let( :entry2  ){ stub hours: 5.1 }
+    let( :entry1  ){ double hours: 3   }
+    let( :entry2  ){ double hours: 5.1 }
     it "returns the total money charged for that invoice, with taxes" do
       invoice.add_entry entry1
       invoice.add_entry entry2

@@ -67,7 +67,7 @@ describe InvoiceStore do
     invoice = store.new_invoice
     invoice.stub number: 15
     expect{ store.new_invoice 15 }.to raise_error StandardError
-    expect{ store.new_invoice 16 }.not_to raise_error StandardError
+    expect{ store.new_invoice 16 }.not_to raise_error
   end
 
 end
