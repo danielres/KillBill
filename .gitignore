@@ -3,3 +3,8 @@ tmp
 *.kate-swp
 .idea/
 db/data.rb
+.tags
+.gemtags
+.tags_sorted_by_file
+*.rb_BAK
+*.rb_DELETEME
