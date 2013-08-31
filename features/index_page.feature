@@ -24,3 +24,11 @@ Feature: Index page
     Then  I should see "2013005"
     But   I should not see "2013004"
 
+  Scenario: Viewing index page with styling
+    Given  I am on the homepage
+    Then   the page should be styled
+    When   I visit the stylesheet url
+    Then   I should see the stylesheet
+
+
+

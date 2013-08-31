@@ -7,7 +7,10 @@ require 'invoice_store'
 require 'invoice_exhibit'
 
 class KillBill < Sinatra::Base
+
   set :root, [ File.dirname(__FILE__), '/..'].join
+
+  get( '/:filename.css' ){ sass params[:filename].to_sym, views: "assets/stylesheets/" }
 
   def initialize
     super
