@@ -20,13 +20,13 @@ class KillBill < Sinatra::Base
 
 
   get '/' do
-    invoices = invoice_store.entries.map{ |e| InvoiceExhibit.new( e ) }
-    haml :index, locals: { invoices: invoices }, layout: false
+    presentable_invoices = invoice_store.entries.map{ |e| InvoiceExhibit.new( e ) }
+    haml :index, locals: { invoices: presentable_invoices }, layout: false
   end
 
   get '/:invoice_number' do
-    invoice = invoice_store.find params[:invoice_number]
-    InvoiceExhibit.new( invoice ).to_html
+    invoice             = invoice_store.find params[:invoice_number]
+    presentable_invoice = InvoiceExhibit.new( invoice ).to_html
   end
 
 
