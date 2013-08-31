@@ -1,15 +1,14 @@
 require 'haml'
+require_relative './text_evaluator'
 
 class InvoiceExhibit < SimpleDelegator
 
-  def source
-    __getobj__
-  end
 
   def hourly_rate   ; format_price super end
   def ex_vat_total  ; format_price super end
   def vat_total     ; format_price super end
   def inc_vat_total ; format_price super end
+
 
   def emit_date ; format_date super end
   def due_date  ; format_date super end
@@ -44,11 +43,9 @@ class InvoiceExhibit < SimpleDelegator
     def format_price price
       '%.2f' % price
     end
-
     def format_date date
       date.strftime "%F"
     end
-
     def format_person person
       [ person.name,       person.address,
         person.phone,      person.email,
@@ -65,8 +62,10 @@ class InvoiceExhibit < SimpleDelegator
       entries.map{ |e| format_entry e }
     end
     def format_entry entry
-      interpolated_desc = source.instance_eval( '"' + entry.desc + '"' ) rescue ''
-      OpenStruct.new name: entry.name, hours: entry.hours, desc: interpolated_desc
+      e        = TextEvaluator.new
+      new_desc = e.evaluate entry.desc, context: __getobj__, entry: entry, separator: '<br />'
+      entry.define_singleton_method(:desc){ new_desc }
+      entry
     end
 
 end
