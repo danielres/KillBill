@@ -11,13 +11,12 @@ group :specs do
     watch(%r{^lib/.+\.rb})
   end
   # guard 'cucumber', cli: '--format progress 2> tmp/errors.log' do
-  guard 'cucumber', cli: '--format pretty 2> tmp/errors.log' do
+  guard 'cucumber', cli: '--format pretty' do
     watch(%r{^features/.+\.feature$})
     watch(%r{^models/(.+)\.rb$})  { |m| "features/#{m[1]}.feature" }
     watch(%r{^features/support/.+$}) { 'features' }
     watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
     watch(%r{^lib/.+\.rb}){ 'features' }
-
   end
 
 end
