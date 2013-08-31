@@ -41,6 +41,13 @@ describe TextEvaluator do
         expect( e.evaluate 'I have #{ context.number } rubies', context: context ).to eq 'I have 10 rubies'
       end
     end
+    context "given options" do
+      it "passes the options as values for the interpolation" do
+        context = Object.new
+        context.stub number: 10
+        expect( e.evaluate 'I have #{ context.number } #{ stones }', context: context, stones: 'diamonds' ).to eq 'I have 10 diamonds'
+      end
+    end
   end
 
 
