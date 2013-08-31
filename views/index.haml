@@ -1,4 +1,10 @@
-- invoices.each do |i|
-  %li.invoice
-    %a{ href: i.page_path }
-      #{ i.number } | #{ i.emit_date } | €#{ i.ex_vat_total }
+!!!
+%html
+  %head
+    %link{ href: '/main.css', rel: :stylesheet, type: 'text/css' }
+
+  %body
+    - invoices.each do |i|
+      %li.invoice
+        %a{ href: i.page_path }
+          #{ i.number } | #{ i.emit_date } | €#{ i.ex_vat_total }
