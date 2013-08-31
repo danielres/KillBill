@@ -5,7 +5,7 @@ class Invoice
 
   class NullClient
     def method_missing m, *args
-      "client #{m} missing".tap{ |message| warn message }
+      # "client #{m} missing".tap{ |message| warn message }
     end
   end
 
