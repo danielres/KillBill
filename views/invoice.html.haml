@@ -1,24 +1,29 @@
+!!!
+%html
+  %head
+    %link{ href: '/main.css', rel: :stylesheet, type: 'text/css' }
 
-.invoice
-  %h1 Invoice number #{ number }
-  %p Emit date: #{ emit_date }
-  %p Due date:  #{  due_date }
-  %p= ex_vat_total
-  %p= owner
-  %p= client
-  %h2 Activities
-  - entries.each do |e|
-    %li.activity
-      %span.name #{ e.name }:
-      %span.hours #{ e.hours }h
-      .desc #{ e.desc }
+  %body
+    .invoice
+      %h1 Invoice number #{ number }
+      %p Emit date: #{ emit_date }
+      %p Due date:  #{  due_date }
+      %p= ex_vat_total
+      %p= owner
+      %p= client
+      %h2 Activities
+      - entries.each do |e|
+        %li.activity
+          %span.name #{ e.name }:
+          %span.hours #{ e.hours }h
+          .desc #{ e.desc }
 
-  %hr/
-  Hourly rate: €#{ hourly_rate }
-  %br/
-  Total HT: €#{ ex_vat_total }
-  %br/
-  +TVA #{ vat }%: €#{ vat_total }
-  %br/
-  Total TTC: €#{ inc_vat_total }
+      %hr/
+      Hourly rate: €#{ hourly_rate }
+      %br/
+      Total HT: €#{ ex_vat_total }
+      %br/
+      +TVA #{ vat }%: €#{ vat_total }
+      %br/
+      Total TTC: €#{ inc_vat_total }
 
