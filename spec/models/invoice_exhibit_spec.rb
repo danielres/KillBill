@@ -1,76 +1,106 @@
+# encoding: UTF-8
 require_relative '../spec_helper'
-require_relative '../../models/invoice_exhibit'
+require 'invoice_exhibit'
+
 require 'capybara'
-require 'ostruct'
+
+RSpec::Mocks::Mock.module_eval{ def to_f; Float(0) end }
 
 describe InvoiceExhibit do
 
-  let( :invoice ){ instance_double "Invoice"  }
-  let( :exhibit ){ InvoiceExhibit.new invoice }
-
-  describe "#new" do
-    it "creates an invoice exhibit, provided an invoice object" do
+  describe "instanciation" do
+    let( :invoice ){ double  }
+    it "creates an invoice exhibit from an invoice" do
       expect( InvoiceExhibit.new invoice ).to be_kind_of InvoiceExhibit
     end
   end
 
-  describe "#total_hours" do
-    it "delegates total_hours to the object" do
-      invoice.should_receive( :total_hours ).and_return 5.2
-      expect( exhibit.total_hours ).to eq 5.2
+
+  describe "delegation" do
+    let( :invoice ){ double  }
+    let( :exhibit ){ InvoiceExhibit.new invoice }
+    it "forwards unimplemented methods to the invoice object" do
+      allow( invoice ).to receive( :unimplemented ){ 'response_from_invoice' }
+      expect( exhibit.unimplemented ).to eq 'response_from_invoice'
     end
   end
 
-  describe "#desc" do
-    let( :fake_owner               ){ stub 'owner', name: 'name', address: 'address', phone: 123, email: 'a@a.com', vat_number: 1, iban: 123, bic: 'AB', bank_address: 'bank_address' }
-    let( :fake_client              ){ stub 'client', first_name: 'first', last_name: 'last', company_name: 'company_name', address: 'address'                                         }
-    let( :entry_with_interpolation ){ stub 'entry_with_interpolation', name: 'Brogramming', hours: 3, desc: 'Brogramming with my #{ 5 + 5 } bros'                                     }
-    it "interpolates the description contents" do
-      invoice.stub number: 2013001     , owner: fake_owner  , client: fake_client,
-                   emit_date: Time.now , due_date: Time.now , vat: 21,
-                   hourly_rate: 50     , ex_vat_total: 100  , vat_total: 21 ,
-                   inc_vat_total: 121  , entries: [ entry_with_interpolation ]
-      html = Capybara.string exhibit.to_html
-      expect( html ).to have_content 'Brogramming with my 10 bros'
+
+  context "given an entry" do
+
+    context "when entry description contains interpolations" do
+      let( :invoice ){ double( number: 123, entries: [ entry ] ).as_null_object }
+      let( :entry   ){ double( name: 'working', hours: 3, desc:  '#{ entry.name } #{ entry.hours }h, invoice number: #{ number }' ) }
+      it "resolves interpolations" do
+        html = InvoiceExhibit.new( invoice ).to_html
+        expect( html ).to include 'working 3h, invoice number: 123'
+      end
     end
+    context "when entry description is an array" do
+      let( :entry   ){ double( desc:    ['line1','line2'] ).as_null_object }
+      let( :invoice ){ double( entries: [ entry         ] ).as_null_object }
+      it "turns it to multiline html using '<br />' elements" do
+        html = InvoiceExhibit.new( invoice ).to_html
+        expect( html ).to include 'line1<br />line2'
+      end
+    end
+
   end
 
-  describe "#to_html" do
-    it "renders the invoice as html with its contents" do
-      jack_infos   = { name:  "Jack's name"  , address:      "Jack's address"    , phone: "Jack's phone",
-                       email: "Jack's email" , vat_number:   "Jack's vat_number" , iban: "Jack's iban",
-                       bic:   "Jack's bic"   , bank_address: "Jack's bank address" }
-      client_infos = { first_name:   "David"      , last_name: "Wong",
-                       company_name: "ClientCorp" , address:   "David's address" }
-      jack   = OpenStruct.new jack_infos
-      client = OpenStruct.new client_infos
 
-      invoice.should_receive( :number        ).and_return 2013001
-      invoice.should_receive( :hourly_rate   ).and_return 50
-      invoice.should_receive( :vat           ).and_return 21
-      invoice.should_receive( :entries       ).and_return [ stub( 'entry1', name: 'Brogramming', hours: 3, desc: '' ), stub( 'entry2', name: 'Drawing', hours: 5, desc: '' ) ]
-      invoice.should_receive( :ex_vat_total  ).and_return 1000
-      invoice.should_receive( :vat_total     ).and_return 210
-      invoice.should_receive( :inc_vat_total ).and_return 1210
-      invoice.should_receive( :emit_date     ).and_return Time.parse("2013-08-05")
-      invoice.should_receive( :due_date      ).and_return Time.parse("2013-09-04")
-      invoice.should_receive( :owner         ).and_return jack
-      invoice.should_receive( :client        ).and_return client
+  describe "rendering an invoice with entries" do
+    let( :exhibit ){ InvoiceExhibit.new invoice }
+    let( :invoice ) do
+      instance_double "Invoice",
+      number: 2013001 , hourly_rate: 50     , vat: 21     , ex_vat_total: 1000 ,
+      vat_total: 210  , inc_vat_total: 1210 , owner: jack , client: client     ,
+        entries: entries, emit_date: Time.parse("2013-08-05"), due_date:  Time.parse("2013-09-04")
+    end
+    let( :entries ) do
+      [ double( 'entry1', name: 'Brogramming', hours: 3, desc: '' ),
+        double( 'entry2', name: 'Drawing'    , hours: 5, desc: '' ) ]
+    end
+    let( :jack         ){ double owner_infos   }
+    let( :client       ){ double client_infos }
+    let( :owner_infos   ) do
+        { name:  "Jname", address: "Jaddress", phone: "Jphone", email: "Jemail",
+          vat_number: "Jvat_number", iban: "Jiban", bic: "Jbic", bank_address: "Jbank address" }
+    end
+    let( :client_infos ) do
+        { first_name:   "David"      , last_name: "Wong",
+          company_name: "ClientCorp" , address:   "David's address" }
+    end
+
+    it 'renders the invoice with entries as html' do
       html = Capybara.string exhibit.to_html
       expect( html ).to have_css '.invoice'
       expect( html ).to have_css '.activity', count: 2
-      expect( html.all('.activity').first ).to have_content 'Brogramming'
-      expect( html.all('.activity').first ).to have_content '3h'
-      expect( html.all('.activity').last  ).to have_content 'Drawing'
-      expect( html.all('.activity').last  ).to have_content '5h'
-      expect( html ).to have_content '2013-08-05'
-      expect( html ).to have_content '2013-09-04'
-      expect( html ).to have_content '21%'
-      expect( html ).to have_content '€1000'
-      expect( html ).to have_content '€210'
-      expect( html ).to have_content '€1210'
-      jack_infos.values.each  { |jack_info|   expect( html ).to have_content jack_info   }
-      client_infos.values.each{ |client_info| expect( html ).to have_content client_info }
+    end
+    describe 'rendered entries' do
+      it 'show title and duration' do
+        html = Capybara.string exhibit.to_html
+        entry1_html = html.all('.activity').first
+        entry2_html = html.all('.activity').last
+        expect( entry1_html ).to have_content 'Brogramming'
+        expect( entry1_html ).to have_content '3h'
+        expect( entry2_html ).to have_content 'Drawing'
+        expect( entry2_html ).to have_content '5h'
+      end
+    end
+    describe 'invoice details' do
+      let( :html ){ Capybara.string exhibit.to_html }
+      it( "mentions the emit date"){ expect( html ).to have_content '2013-08-05'  }
+      it( "mentions the due date" ){ expect( html ).to have_content '2013-09-04'  }
+      it( "mentions the vat rate" ){ expect( html ).to have_content '21%'         }
+      it( "mentions the ex vat total"  ){ expect( html ).to have_content '€1000'  }
+      it( "mentions the vat total"     ){ expect( html ).to have_content '€210'   }
+      it( "mentions the inc vat total" ){ expect( html ).to have_content '€1210'  }
+      it( "displays the owner's business infos" ) do
+        owner_infos.values.each { |owner_info|   expect( html ).to have_content owner_info }
+      end
+      it( "displays the client's business infos" ) do
+        client_infos.values.each{ |client_info| expect( html ).to have_content client_info }
+      end
     end
 
   end
