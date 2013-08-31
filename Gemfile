@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'sinatra'
 gem 'haml'
+gem 'sass'
 
 group :test do
   gem 'cucumber-sinatra'
