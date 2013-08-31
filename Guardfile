@@ -9,7 +9,7 @@ group :specs do
     # watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
     watch('spec/spec_helper.rb')  { "spec" }
   end
-&
+
   guard 'cucumber', cli: '--format pretty 2> tmp/errors.log' do
     watch(%r{^features/.+\.feature$})
     watch(%r{^models/(.+)\.rb$})  { |m| "features/#{m[1]}.feature" }
