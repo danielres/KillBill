@@ -1,5 +1,5 @@
-When(/^I visit the stylesheet url$/) do
-  visit '/stylesheets/main.css'
+When(/^I visit the (.*) stylesheet url$/) do |filename|
+  visit "/#{filename}.css"
 end
 
 Then(/^the page should be styled$/) do

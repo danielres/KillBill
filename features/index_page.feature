@@ -27,7 +27,7 @@ Feature: Index page
   Scenario: Viewing index page with styling
     Given  I am on the homepage
     Then   the page should be styled
-    When   I visit the stylesheet url
+    When   I visit the main stylesheet url
     Then   I should see the stylesheet
 
 
