@@ -21,3 +21,13 @@ group :specs do
 
 end
 
+
+group :livereload do
+  guard 'livereload' do
+    watch(%r{views/.+\.(erb|haml|slim)$})
+    # watch(%r{app/helpers/.+\.rb})
+    watch(%r{assets/stylesheets/(.*)\.sass}) { |m| "/#{m}.css" }
+    # watch(%r{config/locales/.+\.yml})
+    # watch(%r{(assets/stylesheets/\w+/(.+\.(css|js|html))).*}) { |m| "/assets/#{m[3]}" }
+  end
+end

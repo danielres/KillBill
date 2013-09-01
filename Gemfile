@@ -15,4 +15,5 @@ end
 group :development do
   gem 'guard-cucumber'
   gem 'guard-rspec'
+  gem 'guard-livereload'
 end
