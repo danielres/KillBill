@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'sinatra'
 gem 'haml'
 gem 'sass'
+gem 'sinatra-r18n'
 
 group :test do
   gem 'cucumber-sinatra'

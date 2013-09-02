@@ -19,7 +19,8 @@ INVOICE_WITH_PARAMS = Transform /^invoice ([0-9]+) with (.*)$/ do |number, param
   @invoice_store.new_invoice number.to_i,
               vat:         params["vat"].to_f,
               hourly_rate: params["hourly_rate"].to_f,
-              emit_date:   params["emit_date"]
+              emit_date:   params["emit_date"],
+              locale:      params["locale"]
 end
 
 Given(/^an (#{INVOICE}|#{INVOICE_WITH_PARAMS})$/) do |invoice|

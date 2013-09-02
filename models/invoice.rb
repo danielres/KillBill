@@ -20,6 +20,7 @@ class Invoice
     @store        = options[:store]
     @emit_date    = Time.parse( options[:emit_date] || Time.now.to_s )
     @currency     = ( options[:currency] || 'euro' ).to_s
+    @locale       = options[:locale]
   end
 
   def owner
@@ -53,6 +54,10 @@ class Invoice
 
   def page_path
     "/#{number}"
+  end
+
+  def locale
+    @locale || 'en'
   end
 
 

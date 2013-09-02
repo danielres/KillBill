@@ -4,7 +4,10 @@ require 'invoice_exhibit'
 
 require 'capybara'
 
-RSpec::Mocks::Mock.module_eval{ def to_f; Float(0) end }
+RSpec::Mocks::Mock.module_eval{
+  def to_f   ; Float( 0 )    end
+  def locale ; 'fake_locale' end
+}
 
 describe InvoiceExhibit do
 
@@ -68,16 +71,6 @@ describe InvoiceExhibit do
     end
   end
 
-  describe "Internationalization" do
-    it "supports setting and reading a locale" do
-      exhibit = InvoiceExhibit.new double, locale: :loc
-      expect( exhibit.locale ).to eq :loc
-    end
-    it "defaults to 'en' when none passed " do
-      exhibit = InvoiceExhibit.new double
-      expect( exhibit.locale ).to eq :en
-    end
-  end
 
   describe "rendering an invoice with entries" do
     let( :exhibit ){ InvoiceExhibit.new invoice }
@@ -120,8 +113,8 @@ describe InvoiceExhibit do
     end
     describe 'invoice details' do
       let( :html ){ Capybara.string exhibit.to_html }
-      it( "mentions the emit date"){ expect( html ).to have_content '2013-08-05'  }
-      it( "mentions the due date" ){ expect( html ).to have_content '2013-09-04'  }
+      it( "mentions the emit date"){ expect( html ).to have_content '05/08/2013'  }
+      it( "mentions the due date" ){ expect( html ).to have_content '04/09/2013'  }
       it( "mentions the vat rate" ){ expect( html ).to have_content '21%'         }
       it( "mentions the ex vat total"  ){ expect( html ).to have_content '€1000'  }
       it( "mentions the vat total"     ){ expect( html ).to have_content '€210'   }

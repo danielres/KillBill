@@ -128,6 +128,21 @@ describe Invoice do
     end
   end
 
+  describe "setting the locale" do
+    context "given a locale parameter" do
+      it "set the locale accordingly" do
+        invoice = Invoice.new 123, locale: 'loc'
+        expect( invoice.locale ).to eq 'loc'
+      end
+    end
+    context "given no locale parameter" do
+      it "defaults to 'en'" do
+        invoice = Invoice.new 123
+        expect( invoice.locale ).to eq 'en'
+      end
+    end
+  end
+
   describe "setting the currency" do
     context "given a currency parameter" do
       it "set the currency accordingly" do

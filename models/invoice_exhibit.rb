@@ -2,12 +2,17 @@ require 'haml'
 
 $LOAD_PATH.unshift 'models'
 require 'text_evaluator'
+require 'r18n-core'
+
+
 
 class InvoiceExhibit < SimpleDelegator
 
   def initialize model, options = {}
     __setobj__( model )
-    @locale = options.delete(:locale)
+    @locale = model.locale
+    R18n.default_places = './i18n/'
+    R18n.set( @locale )
   end
 
   def locale        ; @locale.to_sym end
@@ -36,7 +41,9 @@ class InvoiceExhibit < SimpleDelegator
               hourly_rate: hourly_rate,
              ex_vat_total: ex_vat_total,
                 vat_total: vat_total,
-            inc_vat_total: inc_vat_total
+            inc_vat_total: inc_vat_total,
+                        t: R18n.get.t
+
   end
 
 
@@ -53,7 +60,7 @@ class InvoiceExhibit < SimpleDelegator
     end
 
     def format_date date
-      date.strftime "%F"
+      R18n.get.l date.to_date
     end
     def format_person person
       output = []
