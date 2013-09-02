@@ -50,17 +50,26 @@ class InvoiceExhibit < SimpleDelegator
       date.strftime "%F"
     end
     def format_person person
-      [ person.name,       person.address,
-        person.phone,      person.email,
-        person.vat_number, person.iban,
-        person.bic,        person.bank_address ].compact.join '<br />'
+      output = []
+      output << person.name
+      output << person.address
+      output << person.phone
+      output << person.email
+      output << "TVA: #{person.vat_number}"
+      output << "<br />"
+      output << "IBAN: #{person.iban}"
+      output << "BIC: #{person.bic}"
+      output << person.bank_address
+      output.compact.join '<br />'
     end
     def format_client client
-      [ client.first_name,
-        client.last_name,
-        client.company_name,
-        client.address,
-        client.vat_number].compact.join '<br />'
+      output = []
+      output << client.first_name
+      output << client.last_name
+      output << client.company_name
+      output << client.address
+      output << "TVA: #{client.vat_number}"
+      output.compact.join '<br />'
     end
     def format_entries entries
       entries.map{ |e| format_entry e }
