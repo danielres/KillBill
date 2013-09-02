@@ -29,7 +29,7 @@ describe InvoiceExhibit do
   context "given an entry" do
 
     context "when entry description contains interpolations" do
-      let( :invoice ){ double( number: 123, entries: [ entry ] ).as_null_object }
+      let( :invoice ){ double( number: 123, currency: 'euro',  entries: [ entry ] ).as_null_object }
       let( :entry   ){ double( name: 'working', hours: 3, desc:  '#{ entry.name } #{ entry.hours }h, invoice number: #{ number }' ) }
       it "resolves interpolations" do
         html = InvoiceExhibit.new( invoice ).to_html
@@ -38,14 +38,36 @@ describe InvoiceExhibit do
     end
     context "when entry description is an array" do
       let( :entry   ){ double( desc:    ['line1','line2'] ).as_null_object }
-      let( :invoice ){ double( entries: [ entry         ] ).as_null_object }
+      let( :invoice ){ double( entries: [ entry         ], currency: 'euro' ).as_null_object }
       it "turns it to multiline html using '<br />' elements" do
         html = InvoiceExhibit.new( invoice ).to_html
         expect( html ).to include 'line1<br />line2'
       end
     end
 
+    describe "formatting price fields for display" do
+      context "when in euros" do
+        let( :invoice ){ double( ex_vat_total: 100, vat_total: 21, inc_vat_total: 121, currency: 'euro' ) }
+        it "formats invoice prices as euros" do
+          decorated_invoice = InvoiceExhibit.new( invoice )
+          expect( decorated_invoice.ex_vat_total  ).to eq "€100.00"
+          expect( decorated_invoice.vat_total     ).to eq "€21.00"
+          expect( decorated_invoice.inc_vat_total ).to eq "€121.00"
+        end
+      end
+      context "when in dollars" do
+        let( :invoice ){ double( ex_vat_total: 100, vat_total: 21, inc_vat_total: 121, currency: 'dollar' ) }
+        it "formats invoice prices as dollars" do
+          decorated_invoice = InvoiceExhibit.new( invoice )
+          expect( decorated_invoice.ex_vat_total  ).to eq "$100.00"
+          expect( decorated_invoice.vat_total     ).to eq "$21.00"
+          expect( decorated_invoice.inc_vat_total ).to eq "$121.00"
+        end
+      end
+
+    end
   end
+
 
 
   describe "rendering an invoice with entries" do
@@ -53,7 +75,7 @@ describe InvoiceExhibit do
     let( :invoice ) do
       instance_double "Invoice",
       number: 2013001 , hourly_rate: 50     , vat: 21     , ex_vat_total: 1000 ,
-      vat_total: 210  , inc_vat_total: 1210 , owner: jack , client: client     ,
+      vat_total: 210  , inc_vat_total: 1210 , owner: jack , client: client     , currency: 'euro',
         entries: entries, emit_date: Time.parse("2013-08-05"), due_date:  Time.parse("2013-09-04")
     end
     let( :entries ) do
@@ -74,13 +96,13 @@ describe InvoiceExhibit do
     it 'renders the invoice with entries as html' do
       html = Capybara.string exhibit.to_html
       expect( html ).to have_css '.invoice'
-      expect( html ).to have_css '.activity', count: 2
+      expect( html ).to have_css '.entry', count: 2
     end
     describe 'rendered entries' do
       it 'show title and duration' do
         html = Capybara.string exhibit.to_html
-        entry1_html = html.all('.activity').first
-        entry2_html = html.all('.activity').last
+        entry1_html = html.all('.entry').first
+        entry2_html = html.all('.entry').last
         expect( entry1_html ).to have_content 'Brogramming'
         expect( entry1_html ).to have_content '3h'
         expect( entry2_html ).to have_content 'Drawing'

@@ -43,8 +43,9 @@ class InvoiceExhibit < SimpleDelegator
     end
 
     def format_price price
-      '%.2f' % price
+      "#{currency_symbol}%.2f" % price
     end
+
     def format_date date
       date.strftime "%F"
     end
@@ -68,6 +69,14 @@ class InvoiceExhibit < SimpleDelegator
       new_desc = e.evaluate entry.desc, context: __getobj__, entry: entry, separator: '<br />'
       entry.define_singleton_method(:desc){ new_desc }
       entry
+    end
+    def currency_symbol
+      case currency = __getobj__.currency
+      when 'dollar' then '$'
+      when 'euro'   then '€'
+      else
+        raise StandardError, "Can't determine currency symbol for '#{currency}'"
+      end
     end
 
 end

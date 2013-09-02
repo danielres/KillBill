@@ -9,7 +9,7 @@ class Invoice
     end
   end
 
-  attr_reader :number, :entries, :hourly_rate, :vat, :client, :store, :emit_date
+  attr_reader :number, :entries, :hourly_rate, :vat, :client, :store, :emit_date, :currency
 
   def initialize number, options = {}
     @number       = number.to_i
@@ -19,6 +19,7 @@ class Invoice
     @client       = options[:client] || NullClient.new
     @store        = options[:store]
     @emit_date    = Time.parse( options[:emit_date] || Time.now.to_s )
+    @currency     = ( options[:currency] || 'euro' ).to_s
   end
 
   def owner

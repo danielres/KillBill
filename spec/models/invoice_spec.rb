@@ -128,4 +128,19 @@ describe Invoice do
     end
   end
 
+  describe "setting the currency" do
+    context "given a currency parameter" do
+      it "set the currency accordingly" do
+        invoice = Invoice.new 123, currency: :bourzouf
+        expect( invoice.currency ).to eq 'bourzouf'
+      end
+    end
+    context "given no currency parameter" do
+      it "defaults to euros" do
+        invoice = Invoice.new 123
+        expect( invoice.currency ).to eq 'euro'
+      end
+    end
+  end
+
 end
