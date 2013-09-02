@@ -218,6 +218,8 @@ table.visible
     p
       margin: 0
   .owner_info
+    h1
+      display: none
     clear: left
   .logo
     float: left
@@ -229,12 +231,18 @@ table.visible
     border: 1px solid gray
     border-radius: 1px
     padding: 10px
-    .span
-      font-family: monospace
+    h1
+      display: none
+    dt
+      font-weight: bold
+    dd
+      margin-left: 0
   .pagetitle
     font-size: 3em
     line-height: 3em
   .details
+    h1
+      display: none
     clear: both
     table
       @extend table.visible
@@ -243,9 +251,16 @@ table.visible
       td,th
         text-align: left
         padding: 10px 20px
-      th.numeric
+      .numeric
         text-align: right
       tfoot
         font-weight: bold
+        dl
+          margin: 0
+        dt, dd
+          display: inline-block
+        dd
+          margin-left: 0
+          width: 10%
         tr
           border-bottom: 0 !important

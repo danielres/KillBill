@@ -5,18 +5,18 @@
 
   %body
     %article.invoice
-      %h1 Invoice
+      %h1.pagetitle Invoice
 
       %section.meta
         %h1 Meta
         %dl.number
-          %dt Invoice number
+          %dt Invoice number:
           %dd= number
         %dl.emit_date
-          %dt Emit date
+          %dt Emit date:
           %dd= emit_date
         %dl.due_date
-          %dt Due date
+          %dt Due date:
           %dd= due_date
 
       %section.owner_info
@@ -24,7 +24,7 @@
         %address= owner
 
       %section.client_info
-        %h1 Client name and contact info
+        %h1 Client
         %address= client
 
       %section.details
@@ -47,29 +47,18 @@
                   %dl
                     %dt= e.name
                     %dd= e.desc
-                %td
-                  %dd.ex_vat_total= e.ex_vat_total
-                %td
-                  %dd.ex_vat_total= e.ex_vat_total
+                %td.ex_vat_total.numeric= e.ex_vat_total
+                %td.ex_vat_total.numeric= e.ex_vat_total
 
           %tfoot
+            - colspan = 3
             %tr.ex_vat_total
-              - colspan = 3
-              %td{ colspan: colspan }
-              %td
-                %dl
-                  %dt Total HT
-                  %dd= ex_vat_total
+              %td.numeric{ colspan: colspan } Total HT:
+              %td.numeric= ex_vat_total
             %tr.vat_total
-              %td{ colspan: colspan }
-              %td
-                %dl
-                  %dt +VAT #{ vat }%
-                  %dd= vat_total
+              %td.numeric{ colspan: colspan } +VAT #{ vat }%:
+              %td.numeric= vat_total
             %tr.inc_vat_total
-              %td{ colspan: colspan }
-              %td
-                %dl
-                  %dt Total TTC
-                  %dd= inc_vat_total
+              %td.numeric{ colspan: colspan } Total TTC:
+              %td.numeric= inc_vat_total
 
