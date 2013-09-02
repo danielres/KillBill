@@ -201,10 +201,13 @@ table.visible
     img
       max-width: 100%
 
-.facture
+.invoice
   body, html
     min-height: 100%
-  address
+  .client_info,
+  .owner_info
+    h1
+      font-size: 100%
     float: left
     padding: 20px
     margin-right: 10px
@@ -212,10 +215,10 @@ table.visible
     border-radius: 1px
     height: 15em
     margin-bottom: 40px
-    &.pixarea
-      clear: left
     p
       margin: 0
+  .owner_info
+    clear: left
   .logo
     float: left
     margin: 0 50px 20px 0
@@ -231,13 +234,18 @@ table.visible
   .pagetitle
     font-size: 3em
     line-height: 3em
-  table
+  .details
     clear: both
-    width: 100%
-    td,th
-      text-align: left
-      padding: 10px 20px
-    tfoot
-      font-weight: bold
-      tr
-        border-bottom: 0 !important
+    table
+      @extend table.visible
+      clear: both
+      width: 100%
+      td,th
+        text-align: left
+        padding: 10px 20px
+      th.numeric
+        text-align: right
+      tfoot
+        font-weight: bold
+        tr
+          border-bottom: 0 !important

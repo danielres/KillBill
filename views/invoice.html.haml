@@ -19,13 +19,13 @@
           %dt Due date
           %dd= due_date
 
-      %section.client_info
-        %h1 Client name and contact info
-        %address= client
-
       %section.owner_info
         %h1 Owner info
         %address= owner
+
+      %section.client_info
+        %h1 Client name and contact info
+        %address= client
 
       %section.details
         %h1 Invoice details
@@ -33,20 +33,24 @@
 
           %thead
             %tr
-              %th Quantity
-              %th Description
-              %th Unitary price
-              %th Total
+              %th.quantity              Quantity
+              %th.description           Description
+              %th.unitary_price.numeric Unitary price
+              %th.total.numeric         Total
 
           %tbody
             - entries.each do |e|
               %tr.entry
                 %td
+                  1
+                %td
                   %dl
                     %dt= e.name
-                    %dd.hours #{ e.hours }h
-                    %dd.hourly_rate #{ hourly_rate }
-                    %dd.desc= e.desc
+                    %dd= e.desc
+                %td
+                  %dd.ex_vat_total= e.ex_vat_total
+                %td
+                  %dd.ex_vat_total= e.ex_vat_total
 
           %tfoot
             %tr.ex_vat_total
