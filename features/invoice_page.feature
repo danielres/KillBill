@@ -20,7 +20,6 @@ Feature: Invoice page
   Scenario: A user visits the page of an invoice and sees the business infos of the client
     Given an invoice 2013001 for "David Wong" from "ClientCorp" at "Business address" with vat number "BE 11 22 33"
     When  I am on the invoice 2013001 page
-    Then show me the page
     Then  I should see "David", "Wong", "ClientCorp", "Business address", "BE 11 22 33"  within the invoice
 
   Scenario: A user visits the page of an invoice and sees the line items with their descriptions
