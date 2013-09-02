@@ -66,9 +66,12 @@ class InvoiceExhibit < SimpleDelegator
       entries.map{ |e| format_entry e }
     end
     def format_entry entry
+      ex_vat_total = __getobj__.hourly_rate * entry.hours
+      ex_vat_total = format_price( ex_vat_total )
       e        = TextEvaluator.new
       new_desc = e.evaluate entry.desc, context: __getobj__, entry: entry, separator: '<br />'
       entry.define_singleton_method(:desc){ new_desc }
+      entry.define_singleton_method(:ex_vat_total){ ex_vat_total }
       entry
     end
     def currency_symbol
