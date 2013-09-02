@@ -48,8 +48,10 @@
                   1
                 %td
                   %dl
-                    %dt= e.name
-                    %dd= e.desc
+                    %dt.name= e.name
+                    %dd.desc= e.desc
+                    %dd.hours #{e.hours}h
+                    %dd.hourly_rate #{hourly_rate}
                 %td.ex_vat_total.numeric= e.ex_vat_total
                 %td.ex_vat_total.numeric= e.ex_vat_total
 
