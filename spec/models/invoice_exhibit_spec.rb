@@ -68,7 +68,16 @@ describe InvoiceExhibit do
     end
   end
 
-
+  describe "Internationalization" do
+    it "supports setting and reading a locale" do
+      exhibit = InvoiceExhibit.new double, locale: :loc
+      expect( exhibit.locale ).to eq :loc
+    end
+    it "defaults to 'en' when none passed " do
+      exhibit = InvoiceExhibit.new double
+      expect( exhibit.locale ).to eq :en
+    end
+  end
 
   describe "rendering an invoice with entries" do
     let( :exhibit ){ InvoiceExhibit.new invoice }

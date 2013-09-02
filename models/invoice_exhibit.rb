@@ -5,6 +5,12 @@ require 'text_evaluator'
 
 class InvoiceExhibit < SimpleDelegator
 
+  def initialize model, options = {}
+    __setobj__( model )
+    @locale = options.delete(:locale)
+  end
+
+  def locale        ; @locale.to_sym end
 
   def hourly_rate   ; format_price super end
   def ex_vat_total  ; format_price super end
