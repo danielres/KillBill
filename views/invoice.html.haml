@@ -4,26 +4,68 @@
     %link{ href: '/main.css', rel: :stylesheet, type: 'text/css' }
 
   %body
-    .invoice
-      %h1 Invoice number #{ number }
-      %p Emit date: #{ emit_date }
-      %p Due date:  #{  due_date }
-      %p= ex_vat_total
-      %p= owner
-      %p= client
-      %h2 Activities
-      - entries.each do |e|
-        %li.activity
-          %span.name #{ e.name }:
-          %span.hours #{ e.hours }h
-          .desc #{ e.desc }
+    %article.invoice
+      %h1 Invoice
 
-      %hr/
-      Hourly rate: €#{ hourly_rate }
-      %br/
-      Total HT: €#{ ex_vat_total }
-      %br/
-      +TVA #{ vat }%: €#{ vat_total }
-      %br/
-      Total TTC: €#{ inc_vat_total }
+      %section.meta
+        %h1 Meta
+        %dl.number
+          %dt Invoice number
+          %dd= number
+        %dl.emit_date
+          %dt Emit date
+          %dd= emit_date
+        %dl.due_date
+          %dt Due date
+          %dd= due_date
+
+      %section.client_info
+        %h1 Client name and contact info
+        %address= client
+
+      %section.owner_info
+        %h1 Owner info
+        %address= owner
+
+      %section.details
+        %h1 Invoice details
+        %table
+
+          %thead
+            %tr
+              %th Quantity
+              %th Description
+              %th Unitary price
+              %th Total
+
+          %tbody
+            - entries.each do |e|
+              %tr.entry
+                %td
+                  %dl
+                    %dt= e.name
+                    %dd.hours #{ e.hours }h
+                    %dd.hourly_rate #{ hourly_rate }
+                    %dd.desc= e.desc
+
+          %tfoot
+            %tr.ex_vat_total
+              - colspan = 3
+              %td{ colspan: colspan }
+              %td
+                %dl
+                  %dt Total HT
+                  %dd= ex_vat_total
+            %tr.vat_total
+              %td{ colspan: colspan }
+              %td
+                %dl
+                  %dt +VAT #{ vat }%
+                  %dd= vat_total
+            %tr.inc_vat_total
+              %td{ colspan: colspan }
+              %td
+                %dl
+                  %dt Total TTC
+                  %dd= inc_vat_total
 
