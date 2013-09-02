@@ -72,10 +72,11 @@ Then(/^I should see Jack's business info: name, address, phone, email, VAT numbe
   end
 end
 
-Given(/^an invoice (\d+) for "David Wong" from "ClientCorp" at "Business address"$/) do |number|
+Given(/^an invoice (\d+) for "David Wong" from "ClientCorp" at "Business address" with vat number "(.*)"$/) do |number, vat_number|
   client = OpenStruct.new first_name: "David",
                            last_name: "Wong",
                         company_name: "ClientCorp",
-                             address: "Business address"
+                             address: "Business address",
+                          vat_number: vat_number
   @invoice_store.new_invoice number, client: client
 end

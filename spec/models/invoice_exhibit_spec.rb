@@ -90,7 +90,7 @@ describe InvoiceExhibit do
     end
     let( :client_infos ) do
         { first_name:   "David"      , last_name: "Wong",
-          company_name: "ClientCorp" , address:   "David's address" }
+          company_name: "ClientCorp" , address:   "David's address", vat_number: 'BE 44 55 66' }
     end
 
     it 'renders the invoice with entries as html' do

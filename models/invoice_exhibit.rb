@@ -59,7 +59,8 @@ class InvoiceExhibit < SimpleDelegator
       [ client.first_name,
         client.last_name,
         client.company_name,
-        client.address].compact.join '<br />'
+        client.address,
+        client.vat_number].compact.join '<br />'
     end
     def format_entries entries
       entries.map{ |e| format_entry e }
